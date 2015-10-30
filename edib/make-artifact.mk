@@ -1,0 +1,29 @@
+include edib/shared.mk
+
+ifdef RELEASE_NAME
+IMAGE_NAME         = $(RELEASE_NAME):$(RELEASE_TAG)
+else
+RELEASE_PREFIX    ?= local
+RELEASE_TAG       ?= $(APP_VER)
+IMAGE_NAME         = $(RELEASE_PREFIX)/$(APP_NAME):$(RELEASE_TAG)
+endif
+IMAGE_NAME_LATEST  = $(IMAGE_NAME:$(RELEASE_TAG)=latest)
+RELEASE_SETTINGS   = --change 'CMD trap exit TERM; /app/bin/$(APP_NAME) foreground \& wait'
+
+RELATIVE_TARBALL   = $(NAMED_TARBALL:$(TARBALLS_DIR)/%=%)
+ARTIFACT_NAME      = artifact.cfg
+ARTIFACT_TEMPLATE  = $(TOOLS_DIR)/$(ARTIFACT_NAME).template
+ARTIFACT_FILE      = $(TARBALLS_DIR)/$(ARTIFACT_NAME)
+
+all: $(ARTIFACT_FILE)
+
+$(ARTIFACT_FILE): $(ARTIFACT_TEMPLATE)
+	rm -f $(ARTIFACT_FILE)
+	cat $< | \
+	sed "s@TPL_TARBALL_FILE@$(RELATIVE_TARBALL)@g" | \
+	sed "s@TPL_IMAGE_NAME@$(IMAGE_NAME)@g" | \
+	sed "s@TPL_IMAGE_TAG@$(RELEASE_TAG)@g" | \
+	sed "s@TPL_IMAGE_SETTINGS@$(RELEASE_SETTINGS)@g" \
+	> $(ARTIFACT_FILE)
+
+.PHONY: all $(ARTIFACT_FILE)
