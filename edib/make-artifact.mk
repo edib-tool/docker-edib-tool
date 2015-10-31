@@ -1,13 +1,12 @@
 include edib/shared.mk
 
 ifdef RELEASE_NAME
-IMAGE_NAME         = $(RELEASE_NAME):$(RELEASE_TAG)
+IMAGE_NAME         = $(RELEASE_NAME)
 else
 RELEASE_PREFIX    ?= local
-RELEASE_TAG       ?= $(APP_VER)
-IMAGE_NAME         = $(RELEASE_PREFIX)/$(APP_NAME):$(RELEASE_TAG)
+IMAGE_NAME         = $(RELEASE_PREFIX)/$(APP_NAME)
 endif
-IMAGE_NAME_LATEST  = $(IMAGE_NAME:$(RELEASE_TAG)=latest)
+RELEASE_TAG       ?= $(APP_VER)
 RELEASE_SETTINGS   = --change 'CMD trap exit TERM; /app/bin/$(APP_NAME) foreground \& wait'
 
 RELATIVE_TARBALL   = $(NAMED_TARBALL:$(TARBALLS_DIR)/%=%)
