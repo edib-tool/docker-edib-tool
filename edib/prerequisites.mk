@@ -10,6 +10,7 @@ move-app: $(APP_DIR)
 $(APP_DIR):
 	rsync -av \
 		--exclude=.git\
+		--exclude=.edib.log \
 		--exclude=_build \
 		--exclude=deps \
 		--exclude=node_modules \
