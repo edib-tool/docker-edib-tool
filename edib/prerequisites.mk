@@ -14,7 +14,7 @@ $(APP_DIR):
 		--exclude=_build \
 		--exclude=deps \
 		--exclude=node_modules \
-		--exclude=rel \
+		--exclude=rel/$(APP_NAME) \
 		--exclude=tarballs \
 		$(SOURCE_DIR)/ $(APP_DIR)
 
