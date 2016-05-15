@@ -17,13 +17,13 @@ ESZ_CMD = $(TOOLS_DIR)/ex_strip_zip
 ifdef RELEASE_STRIP
 ESZ_STRIP = $(ESZ_CMD) strip $(ROOTFS_APP)
 else
-ESZ_STRIP = echo "(No stripping of beam files.)"
+ESZ_STRIP = @echo "(No stripping of beam files.)"
 endif
 # application zipping
 ifdef RELEASE_ZIP
 ESZ_ZIP = $(ESZ_CMD) zip $(ROOTFS_APP)
 else
-ESZ_ZIP = echo "(No zipping of OTP applications.)"
+ESZ_ZIP = @echo "(No zipping of OTP applications.)"
 endif
 
 all: info tarball postinfo
