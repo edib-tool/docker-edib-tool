@@ -2,16 +2,29 @@
 
 include edib/shared.mk
 
-ROOTFS         = $(STAGE_DIR)/rootfs
-ROOTFS_BIN     = $(ROOTFS)/bin
-ROOTFS_SH      = $(ROOTFS_BIN)/sh
-ROOTFS_APP     = $(ROOTFS)/app
-ROOTFS_APP_BIN = $(ROOTFS_APP)/bin
-
+ROOTFS              = $(STAGE_DIR)/rootfs
+ROOTFS_BIN          = $(ROOTFS)/bin
+ROOTFS_SH           = $(ROOTFS_BIN)/sh
+ROOTFS_APP          = $(ROOTFS)/app
+ROOTFS_APP_BIN      = $(ROOTFS_APP)/bin
 BUSYBOX             = /bin/busybox
 SYSTEM_FILES        = $(shell $(TOOLS_DIR)/libdeps)
 SOURCE_FILES        = $(SYSTEM_FILES) $(BUSYBOX)
 ROOTFS_SYSTEM_FILES = $(SOURCE_FILES:%=$(ROOTFS)%)
+
+ESZ_CMD = $(TOOLS_DIR)/ex_strip_zip
+# beam file stripping
+ifdef RELEASE_STRIP
+ESZ_STRIP = $(ESZ_CMD) strip $(ROOTFS_APP)
+else
+ESZ_STRIP = echo "(No stripping of beam files.)"
+endif
+# application zipping
+ifdef RELEASE_ZIP
+ESZ_ZIP = $(ESZ_CMD) zip $(ROOTFS_APP)
+else
+ESZ_ZIP = echo "(No zipping of OTP applications.)"
+endif
 
 all: info tarball postinfo
 
@@ -46,6 +59,8 @@ $(STAGE_DIR):
 
 $(ROOTFS_APP_BIN): $(ROOTFS_APP)
 	tar -xzf $(RELEASE_FILE) -C $(ROOTFS_APP)
+	$(ESZ_STRIP)
+	$(ESZ_ZIP)
 	rm -rf $(ROOTFS_APP)/$(RELEASE)
 
 $(ROOTFS_APP): $(ROOTFS)

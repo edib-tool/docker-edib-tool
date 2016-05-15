@@ -10,7 +10,8 @@ APP_VER        = $(shell $(APPINFO_RUNNER) version)
 
 MIX_ENV       ?= prod
 RELEASE        = releases/$(APP_VER)/$(APP_NAME).tar.gz
-RELEASE_FILE   = $(APP_DIR)/rel/$(APP_NAME)/$(RELEASE)
+RELEASE_PATH   = $(APP_DIR)/rel/$(APP_NAME)
+RELEASE_FILE   = $(RELEASE_PATH)/$(RELEASE)
 
 STAGE_DIR      = /stage
 TARBALLS_DIR   = $(STAGE_DIR)/tarballs
