@@ -3,7 +3,7 @@ include edib/shared.mk
 SSH_KEYS_SRC  = $(HOME)/ssh
 SSH_KEYS_DEST = $(HOME)/.ssh
 
-all: move-app copy-ssh-keys
+all: hex-info move-app copy-ssh-keys
 
 move-app: $(APP_DIR)
 
@@ -25,3 +25,6 @@ $(SSH_KEYS_DEST):
 		mkdir $(SSH_KEYS_DEST) && \
 		rsync -av --no-owner $(SSH_KEYS_SRC)/ $(SSH_KEYS_DEST); \
 	fi
+
+hex-info:
+	mix hex.info
