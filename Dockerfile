@@ -1,4 +1,4 @@
-FROM edib/elixir-phoenix-dev:latest
+FROM edib/elixir-phoenix-dev:1.3
 MAINTAINER Christoph Grabo <edib@markentier.com>
 
 WORKDIR /build
