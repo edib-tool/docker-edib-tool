@@ -22,9 +22,9 @@ $(NAMED_TARBALL): app-release
 app-release: prerequisites
 	$(MAKE) -f edib/make-app.mk
 
-prerequisites: exrm
+prerequisites: distillery
 
-exrm:
-	$(MAKE) -f edib/check-exrm.mk
+distillery:
+	$(MAKE) -f edib/check-distillery.mk
 
-.PHONY: all app-release artifact exrm prerequisites tarball
+.PHONY: all app-release artifact distillery prerequisites tarball

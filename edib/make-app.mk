@@ -27,7 +27,7 @@ postinfo:
 release: $(RELEASE_FILE)
 
 $(RELEASE_FILE): app-compile phoenix-assets
-	$(IN_APP_DIR) MIX_ENV=$(MIX_ENV) mix release
+	$(IN_APP_DIR) mix release --env=prod
 
 app-compile: app-deps
 	$(IN_APP_DIR) MIX_ENV=$(MIX_ENV) mix compile
