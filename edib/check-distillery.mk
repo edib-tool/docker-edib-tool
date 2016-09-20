@@ -11,7 +11,7 @@ distillery:
 ifneq ($(DISTILLERY),true)
 	$(error $(DISTILLERY_ERR))
 else
-	@echo distillery depenceny is present.
+	@echo distillery dependency is present.
 endif
 
 .PHONY: all distillery
