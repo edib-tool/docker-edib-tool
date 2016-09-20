@@ -13,7 +13,7 @@ get_info() {
 }
 
 case $1 in
-  name|version|exrm|phoenix)
+  name|version|distillery|phoenix)
     get_info $1
     ;;
   debug)
