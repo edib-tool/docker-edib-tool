@@ -1,6 +1,6 @@
 #!/usr/bin/env elixir
 defmodule Libdeps do
-  @relpath "app/rel"
+  @relpath "app/_build"
   @lddpath_regex ~r/\/(lib|usr\/lib)[^ ]+/
 
   def all_files do
