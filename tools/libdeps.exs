@@ -4,7 +4,7 @@ defmodule Libdeps do
   @lddpath_regex ~r/\/(lib|usr\/lib)[^ ]+/
 
   def all_files do
-    files
+    files()
     |> Stream.flat_map(&ldd/1)
     |> Enum.uniq
     |> Enum.join(" ")
@@ -12,7 +12,7 @@ defmodule Libdeps do
   end
 
   defp files do
-    executables ++ shared_libs
+    executables() ++ shared_libs()
     |> Stream.uniq
     |> Stream.filter(fn(f)-> f != "" end)
   end
@@ -69,4 +69,4 @@ defmodule Libdeps do
   end
 end
 
-Libdeps.all_files
+Libdeps.all_files()
