@@ -1,6 +1,7 @@
 #!/usr/bin/env elixir
 defmodule Libdeps do
-  @relpath "app/rel"
+  @current_mix_env System.get_env("MIX_ENV") || "prod"
+  @relpath "app/_build/#{@current_mix_env}/rel"
   @lddpath_regex ~r/\/(lib|usr\/lib)[^ ]+/
 
   def all_files do
