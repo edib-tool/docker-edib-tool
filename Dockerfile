@@ -1,8 +1,17 @@
-FROM edib/elixir-phoenix-dev:1.4
+FROM alpine:3.6
 MAINTAINER Christoph Grabo <edib@markentier.com>
+
+ARG ERLANG_VERSION_CONSTRAINT
+ARG REBAR3_VERSION
+ARG ELIXIR_VERSION
+
+ENV ERLANG_VERSION_CONSTRAINT ${ERLANG_VERSION_CONSTRAINT:-'<20'}
+ENV REBAR3_VERSION ${REBAR3_VERSION:-3.4.2}
+ENV ELIXIR_VERSION ${ELIXIR_VERSION:-1.4.5}
+ENV PATH $PATH:/opt/elixir-${ELIXIR_VERSION}/bin
 
 WORKDIR /build
 COPY . /build
-RUN /build/tools/setup.sh
+RUN /build/tools/bootstrap.sh
 
 CMD ["make", "-f", "edib/Makefile"]
