@@ -2,19 +2,27 @@
 
 include edib/shared.mk
 
+ifeq ($(PHOENIX_1_3), true)
+ASSETS_DIR           = $(APP_DIR)/assets
+DIGEST               = phx.digest
+else
+ASSETS_DIR           = $(APP_DIR)
+DIGEST               = phoenix.digest
+endif
+
+IN_ASSETS_DIR        = cd $(ASSETS_DIR) &&
 IN_APP_DIR           = cd $(APP_DIR) &&
 PHOENIX              = $(shell $(APPINFO_RUNNER) phoenix)
-ifeq ($(PHOENIX),true)
-PHOENIX_TASKS        = phoenix-brunch-build phoenix-digest
-endif
-PHOENIX_PACKAGE_JSON = $(APP_DIR)/package.json
-PHOENIX_BRUNCH_CFG   = $(APP_DIR)/brunch-config.js
+PHOENIX_PACKAGE_JSON = $(ASSETS_DIR)/package.json
 HAS_PACKAGE_JSON     = $(shell [ -f $(PHOENIX_PACKAGE_JSON) ] && echo true)
-HAS_BRUNCH_CFG       = $(shell [ -f $(PHOENIX_BRUNCH_CFG) ] && echo true)
 NPM_INSTALL_CMD      = npm install
-NODE_MODULES         = $(APP_DIR)/node_modules
+NODE_MODULES         = $(ASSETS_DIR)/node_modules
 NODE_BIN_DIR         = $(NODE_MODULES)/.bin
-PHOENIX_BRUNCH_CMD   = $(NODE_BIN_DIR)/brunch build
+NPM_DEPLOY_CMD       = npm deploy
+
+ifeq ($(PHOENIX),true)
+PHOENIX_TASKS        = phoenix-assets-build phoenix-digest
+endif
 
 all: info release postinfo
 
@@ -38,19 +46,18 @@ app-deps:
 phoenix-assets: $(PHOENIX_TASKS)
 
 phoenix-digest:
-	$(IN_APP_DIR) MIX_ENV=$(MIX_ENV) mix phoenix.digest
+	$(IN_APP_DIR) MIX_ENV=$(MIX_ENV) mix $(DIGEST)
 
-phoenix-brunch-build: phoenix-node-modules
-ifeq ($(HAS_BRUNCH_CFG),true)
-	$(IN_APP_DIR) $(PHOENIX_BRUNCH_CMD)
+phoenix-assets-build: phoenix-node-modules
+ifeq ($(HAS_PACKAGE_JSON),true)
+	$(IN_ASSETS_DIR) $(NPM_DEPLOY_CMD)
 else
-	@echo No brunch config found. Skipping brunch build task.
-	@echo "(If you use another asset build tool, let me know.)"
+	@echo No package.json found. Skipping assets building.
 endif
 
 phoenix-node-modules:
 ifeq ($(HAS_PACKAGE_JSON),true)
-	$(IN_APP_DIR) $(NPM_INSTALL_CMD)
+	$(IN_ASSETS_DIR) $(NPM_INSTALL_CMD)
 else
 	@echo No package.json found. Skipping npm package installation.
 endif
