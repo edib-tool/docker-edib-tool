@@ -3,11 +3,12 @@ defmodule AppInfo do
   def version, do: config() |> Keyword.get(:version)
   def distillery, do: deps() |> Keyword.has_key?(:distillery)
   def phoenix, do: deps() |> Keyword.has_key?(:phoenix)
-  def phoenix_1_3 do
+  def phoenix_1_3() do
    deps()
    |> Keyword.get(:phoenix)
-   |> elem(1)
-   |> Version.match?(">= 1.3-a")
+   |> String.split()
+   |> Enum.at(1)
+   |> Version.match?(">= 1.3.0-a")
  end
 
   defp config, do: Mix.Project.config()
