@@ -10,9 +10,7 @@ ROOTFS_APP          = $(ROOTFS)/app
 ROOTFS_APP_BIN      = $(ROOTFS_APP)/bin
 BUSYBOX             = /bin/busybox
 SYSTEM_FILES        = $(shell $(TOOLS_DIR)/libdeps)
-FORCED_FILES        = \
-	/usr/lib/libreadline.so.6.3 \
-	/usr/lib/libreadline.so.6
+FORCED_FILES        = $(shell find /usr/lib -name libreadline*)
 SYSTEM_BASH         = /bin/bash
 SOURCE_FILES        = $(SYSTEM_FILES) $(FORCED_FILES) $(BUSYBOX)
 ROOTFS_SYSTEM_FILES = $(SOURCE_FILES:%=$(ROOTFS)%)
