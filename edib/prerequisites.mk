@@ -26,5 +26,8 @@ $(SSH_KEYS_DEST):
 		rsync -av --no-owner $(SSH_KEYS_SRC)/ $(SSH_KEYS_DEST); \
 	fi
 
-hex-info:
+hex-info: local-hex
 	mix hex.info
+
+local-hex:
+	mix local.hex --force
